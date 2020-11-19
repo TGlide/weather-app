@@ -1,6 +1,7 @@
 import React from "react";
 import { ReactComponent as Cloud } from "../../assets/icons/cloud.svg";
 import { ReactComponent as Rain } from "../../assets/icons/rain.svg";
+import { ReactComponent as Drizzle } from "../../assets/icons/drizzle.svg";
 import { ReactComponent as Snow } from "../../assets/icons/snow.svg";
 import { ReactComponent as Sun } from "../../assets/icons/sun.svg";
 import { ReactComponent as Thunder } from "../../assets/icons/thunder.svg";
@@ -18,7 +19,7 @@ const WeatherIcon: React.FC<WeatherIconProps> = ({ iconCode, className }) => {
     "02": Cloud,
     "03": Cloud,
     "04": Cloud,
-    "09": Rain,
+    "09": Drizzle,
     "10": Rain,
     "11": Thunder,
     "13": Snow,
