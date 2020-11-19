@@ -27,6 +27,8 @@
 
   .weather-icon {
     margin-top: 2.5rem;
+    width: 8rem;
+    height: 8rem;
   }
 
   .main-temp {
@@ -56,9 +58,7 @@
         width: 4rem;
         flex-shrink: 0;
 
-        &:not(:last-child) {
-          padding-right: 2rem;
-        }
+        padding: 0 0.75rem;
 
         .icon {
           width: 2.5rem;
