@@ -2,6 +2,7 @@ import React from "react";
 import "./App.scss";
 import CityList from "./components/CityList";
 import CurrentWeather from "./components/CurrentWeather";
+import Search from "./components/Search";
 import { usePosition } from "./hooks/usePosition";
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
   return (
     <div className="App">
       <CurrentWeather coords={coords} error={posError} />
+      <Search />
       <CityList />
     </div>
   );
