@@ -1,5 +1,10 @@
 import axios, { AxiosResponse } from "axios";
 
+export interface GetWeatherParams {
+  latitude: number;
+  longitude: number;
+}
+
 export interface WeatherResponse {
   lat: number;
   lon: number;
@@ -70,7 +75,7 @@ export interface Temp {
 export const getWeather = ({
   latitude,
   longitude,
-}: Coordinates): Promise<AxiosResponse<WeatherResponse>> => {
+}: GetWeatherParams): Promise<AxiosResponse<WeatherResponse>> => {
   const { REACT_APP_WEATHER_API_KEY: apiKey } = process.env;
 
   return axios.get(

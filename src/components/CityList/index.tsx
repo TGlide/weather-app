@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { CityDatum, getCitiesByPopulation } from "../../api/getCities";
 import { sleep } from "../../utils/time";
-import WeatherIcon from "../WeatherIcon";
+import CityCard from "./CityCard";
 import "./styles.scss";
 
 interface CityListProps {}
@@ -40,18 +40,7 @@ const CityList: React.FC<CityListProps> = () => {
   return (
     <div className={`container city-list`}>
       {largestCities.map((city) => {
-        return (
-          <div key={city.id} className={`city-card`}>
-            <div className="weather-info">
-              <WeatherIcon iconCode="01" className={`icon`} />
-              <span className={`temperature`}>21°</span>
-            </div>
-            <div className="city-info">
-              <span className={`city-name`}>{city.name}</span>
-              <span className={`country-name`}>{city.country}</span>
-            </div>
-          </div>
-        );
+        return <CityCard city={city} />;
       })}
     </div>
   );
