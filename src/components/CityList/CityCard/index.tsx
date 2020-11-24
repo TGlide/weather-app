@@ -29,7 +29,7 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
   }, [city.latitude, city.longitude]);
 
   return (
-    <div key={city.id} className={`city-card`}>
+    <div className={`city-card`}>
       <div className="weather-info">
         {weatherInfo && (
           <>

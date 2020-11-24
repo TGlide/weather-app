@@ -40,7 +40,7 @@ const CityList: React.FC<CityListProps> = () => {
   return (
     <div className={`container city-list`}>
       {largestCities.map((city) => {
-        return <CityCard city={city} />;
+        return <CityCard city={city} key={city.id} />;
       })}
     </div>
   );
