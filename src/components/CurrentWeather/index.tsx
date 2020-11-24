@@ -1,8 +1,9 @@
 import { fromUnixTime, isToday } from "date-fns";
-import React, { useEffect, useRef, useState } from "react";
-import { AddressResponse, getAddress } from "../../api/getAddress";
-import { Daily, getWeather, WeatherResponse } from "../../api/getWeather";
+import React, { useEffect, useRef } from "react";
+import { getAddress } from "../../api/getAddress";
+import { Daily, getWeather } from "../../api/getWeather";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
+import { useStoreActions, useStoreState } from "../../store";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
 import "./styles.scss";
@@ -14,12 +15,11 @@ interface CurrentWeatherProps {
 
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
   const scrollBar = useRef<HTMLDivElement>(null);
-  const [weatherData, setWeatherData] = useState<WeatherResponse | undefined>(
-    undefined
-  );
-  const [addressData, setAddressData] = useState<AddressResponse | undefined>(
-    undefined
-  );
+
+  const weatherData = useStoreState((state) => state.location.weather);
+  const setWeatherData = useStoreActions((actions) => actions.setWeather);
+  const addressData = useStoreState((state) => state.location.address);
+  const setAddressData = useStoreActions((actions) => actions.setAddress);
 
   // useEffect(() => {
   //   if (!scrollBar.current || scrollBar.current.scrollWidth === 0) return;
@@ -43,7 +43,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
     if (coords) {
       fetchData();
     }
-  }, [coords]);
+  }, [coords, setWeatherData, setAddressData]);
 
   const renderDay = (date: Daily) => {
     return (
@@ -64,7 +64,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
     return <div className={`pos-error`}>We couldn't get your location.</div>;
   }
 
-  if (!coords || !weatherData || !addressData) {
+  if (!weatherData || !addressData) {
     return <div className={`pos-loading`}>Getting your location...</div>;
   }
 
