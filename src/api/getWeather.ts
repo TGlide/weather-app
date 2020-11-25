@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
 export interface GetWeatherParams {
-  latitude: number;
-  longitude: number;
+  latitude: string | number;
+  longitude: string | number;
 }
 
 export interface WeatherResponse {

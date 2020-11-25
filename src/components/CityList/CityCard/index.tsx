@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { CityDatum } from "../../../api/getCities";
 import { getWeather, WeatherResponse } from "../../../api/getWeather";
-import WeatherIcon from "../../WeatherIcon";
 import { ReactComponent as X } from "../../../assets/icons/x.svg";
-
+import { Location } from "../../../entities/Location";
+import WeatherIcon from "../../WeatherIcon";
 import "./styles.scss";
 
 interface CityCardProps {
-  city: CityDatum;
+  city: Location;
 }
 
 const CityCard: React.FC<CityCardProps> = ({ city }) => {

@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { getAddress } from "../../api/getAddress";
 import { Daily, getWeather } from "../../api/getWeather";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
+import { Location } from "../../entities/Location";
 import { useStoreActions, useStoreState } from "../../store";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
@@ -14,19 +15,12 @@ interface CurrentWeatherProps {
 }
 
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
-  const scrollBar = useRef<HTMLDivElement>(null);
-
   const weatherData = useStoreState((state) => state.location.weather);
   const setWeatherData = useStoreActions((actions) => actions.setWeather);
   const addressData = useStoreState((state) => state.location.address);
   const setAddressData = useStoreActions((actions) => actions.setAddress);
 
-  // useEffect(() => {
-  //   if (!scrollBar.current || scrollBar.current.scrollWidth === 0) return;
-
-  //   scrollBar.current.scrollLeft =
-  //     scrollBar.current.scrollWidth / 2 - scrollBar.current.clientWidth / 2;
-  // }, [scrollBar, coords, weatherData, addressData]);
+  const setSelectedCity = useStoreActions((actions) => actions.setSelectedCity);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,7 +30,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
       });
 
       getAddress(coords).then((res) => {
-        setAddressData(res.data);
+        setAddressData(Location.fromLocationResponse(res.data));
       });
     };
 
@@ -68,18 +62,12 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
     return <div className={`pos-loading`}>Getting your location...</div>;
   }
 
-  const { city, municipality, country } = addressData.results?.[0].components;
-
   return (
     <div className="current-weather">
       <div className="location">
         <MapPin />
-        <span>
-          {municipality || city}, {country}
-        </span>
+        <span>{addressData.name}</span>
       </div>
-
-      {/* <span className={`time`}>20:30</span> */}
 
       <WeatherIcon
         iconCode={weatherData.current.weather[0].icon}
@@ -88,13 +76,20 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
       <span className="main-temp">{Math.round(weatherData.current.temp)}°</span>
 
       <div className="days-container">
-        <div className="days" ref={scrollBar}>
+        <div className="days">
           {weatherData.daily.map((date) => renderDay(date))}
         </div>
         <div className="opacity-overlay"></div>
       </div>
 
-      <button className={`details`}>More details</button>
+      <button
+        className={`details`}
+        onClick={() =>
+          setSelectedCity({ address: addressData, weather: weatherData })
+        }
+      >
+        More details
+      </button>
     </div>
   );
 };

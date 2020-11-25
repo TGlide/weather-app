@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import {
-  searchLocations,
-  SearchLocationsResponse,
-} from "../../api/searchLocations";
+import { searchLocations } from "../../api/searchLocations";
+import { LocationResponse } from "../../api/types/LocationResponse";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
 
 import "./styles.scss";
@@ -15,7 +13,7 @@ const Search: React.FC<SearchProps> = () => {
     NodeJS.Timeout | undefined
   >(undefined);
   const [searchResults, setSearchResults] = useState<
-    SearchLocationsResponse | string | undefined
+    LocationResponse | string | undefined
   >(undefined);
 
   const handleSearch = async (input: string | undefined) => {

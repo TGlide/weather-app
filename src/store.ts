@@ -5,27 +5,42 @@ import {
   createTypedHooks,
   persist,
 } from "easy-peasy";
-import { AddressResponse } from "./api/getAddress";
 import { WeatherResponse } from "./api/getWeather";
+import { Location } from "./entities/Location";
 
 interface LocationData {
   weather?: WeatherResponse;
-  address?: AddressResponse;
+  address?: Location;
 }
 
 interface StoreModel {
   location: LocationData;
   setWeather: Action<StoreModel, WeatherResponse>;
-  setAddress: Action<StoreModel, AddressResponse>;
+  setAddress: Action<StoreModel, Location>;
+
+  selectedCity: LocationData;
+  setSelectedWeather: Action<StoreModel, WeatherResponse>;
+  setSelectedAddress: Action<StoreModel, Location>;
+  setSelectedCity: Action<StoreModel, LocationData>;
 }
 
 export const store = createStore<StoreModel>({
   location: persist({}, { storage: "localStorage" }),
+  selectedCity: {},
   setWeather: action((state, payload) => {
     state.location.weather = payload;
   }),
   setAddress: action((state, payload) => {
     state.location.address = payload;
+  }),
+  setSelectedWeather: action((state, payload) => {
+    state.selectedCity.weather = payload;
+  }),
+  setSelectedAddress: action((state, payload) => {
+    state.selectedCity.address = payload;
+  }),
+  setSelectedCity: action((state, payload) => {
+    state.selectedCity = payload;
   }),
 });
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CityDatum, getCitiesByPopulation } from "../../api/getCities";
+import { Location } from "../../entities/Location";
 import { sleep } from "../../utils/time";
 import CityCard from "./CityCard";
 import "./styles.scss";
@@ -7,7 +8,7 @@ import "./styles.scss";
 interface CityListProps {}
 
 const CityList: React.FC<CityListProps> = () => {
-  const [largestCities, setLargestCities] = useState<CityDatum[]>([]);
+  const [largestCities, setLargestCities] = useState<Location[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,7 +24,7 @@ const CityList: React.FC<CityListProps> = () => {
         return a.name.localeCompare(b.name);
       });
 
-      setLargestCities(cities);
+      setLargestCities(cities.map((city) => Location.fromCityDatum(city)));
     };
 
     fetchData();
@@ -40,7 +41,7 @@ const CityList: React.FC<CityListProps> = () => {
   return (
     <div className={`container city-list`}>
       {largestCities.map((city) => {
-        return <CityCard city={city} key={city.id} />;
+        return <CityCard city={city} key={city.name} />;
       })}
     </div>
   );
