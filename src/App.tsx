@@ -9,7 +9,7 @@ function App() {
   const { coords, error: posError } = usePosition();
 
   return (
-    <div className="App">
+    <div className="App" style={{ overflowY: "scroll" }}>
       <CurrentWeather coords={coords} error={posError} />
       <Search />
       <CityList />
