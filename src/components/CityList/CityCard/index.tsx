@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CityDatum } from "../../../api/getCities";
 import { getWeather, WeatherResponse } from "../../../api/getWeather";
 import WeatherIcon from "../../WeatherIcon";
+import { ReactComponent as X } from "../../../assets/icons/x.svg";
 
 import "./styles.scss";
 
@@ -13,6 +14,7 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
   const [weatherInfo, setWeatherInfo] = useState<WeatherResponse | undefined>(
     undefined
   );
+  const [hidden, setHidden] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,6 +29,8 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
 
     fetchData();
   }, [city.latitude, city.longitude]);
+
+  if (hidden) return null;
 
   return (
     <div className={`city-card`}>
@@ -47,6 +51,9 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
         <span className={`city-name`}>{city.name}</span>
         <span className={`country-name`}>{city.country}</span>
       </div>
+      <button onClick={() => setHidden(true)}>
+        <X style={{ color: "white", fill: "currentcolor" }} />
+      </button>
     </div>
   );
 };
