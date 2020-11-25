@@ -1,13 +1,11 @@
 import {
   Action,
-  createStore,
   action,
+  createStore,
   createTypedHooks,
   persist,
 } from "easy-peasy";
-
 import { AddressResponse } from "./api/getAddress";
-import { CityDatum } from "./api/getCities";
 import { WeatherResponse } from "./api/getWeather";
 
 interface LocationData {
@@ -15,16 +13,10 @@ interface LocationData {
   address?: AddressResponse;
 }
 
-interface CityListData {
-  data: CityDatum[];
-}
-
 interface StoreModel {
   location: LocationData;
   setWeather: Action<StoreModel, WeatherResponse>;
   setAddress: Action<StoreModel, AddressResponse>;
-  cities: CityListData;
-  setCityList: Action<StoreModel, CityDatum[]>;
 }
 
 export const store = createStore<StoreModel>({
@@ -34,10 +26,6 @@ export const store = createStore<StoreModel>({
   }),
   setAddress: action((state, payload) => {
     state.location.address = payload;
-  }),
-  cities: persist({ data: [] }, { storage: "localStorage" }),
-  setCityList: action((state, payload) => {
-    state.cities.data = payload;
   }),
 });
 
