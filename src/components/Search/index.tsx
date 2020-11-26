@@ -5,6 +5,7 @@ import { Location } from "../../entities/Location";
 import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions } from "../../store";
 import "./styles.scss";
+import "../../styles/layout.scss";
 
 interface SearchProps {}
 
@@ -65,12 +66,17 @@ const Search: React.FC<SearchProps> = () => {
       return <div className="searching">{searchResults}</div>;
     }
 
+    const usedKeys: string[] = [];
+
     return (
       <div className="results-list">
         {searchResults.map((result) => {
+          if (usedKeys.includes(result.getKey())) return null;
+          usedKeys.push(result.getKey());
+
           return (
             <div
-              key={`${result.longitude}${result.latitude}`}
+              key={result.getKey()}
               onClick={() => setSelectedAddress(result)}
             >
               {result.name}

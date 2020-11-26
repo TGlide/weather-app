@@ -12,6 +12,7 @@ export default function useComponentVisible(
   const handleHideDropdown = (event: KeyboardEvent) => {
     if (event.key === "Escape") {
       setIsComponentVisible(false);
+      outsideCallback?.();
     }
   };
 

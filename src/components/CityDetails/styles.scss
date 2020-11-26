@@ -11,6 +11,7 @@
 
   display: grid;
   place-items: center;
+  overflow-y: scroll;
 
   .container {
     width: 100%;
@@ -96,6 +97,77 @@
 
           .date {
             font-weight: 200;
+          }
+        }
+      }
+
+      .notes {
+        margin-top: 3rem;
+
+        h2 {
+          font-family: Lato, sans-serif;
+          font-weight: 300;
+          font-size: 1.75rem;
+        }
+
+        textarea {
+          width: 100%;
+          height: 5rem;
+          resize: none;
+
+          background: none;
+          border: 1px rgba($ghost-white, 0.5) solid;
+          border-radius: 0.25rem;
+          outline: none;
+
+          color: $ghost-white;
+          font-family: Lato, sans-serif;
+          font-size: 1rem;
+          font-weight: 400;
+
+          padding: 0.5rem 0.5rem;
+        }
+
+        .create-note {
+          display: block;
+
+          background: rgba($fiery-rose, 1);
+          border: none;
+          border-radius: 100px;
+
+          cursor: pointer;
+          font-family: Poppins, sans-serif;
+          font-weight: 600;
+          color: white;
+
+          padding: 0.5rem 1rem;
+          margin: 1rem auto 0;
+
+          &:hover {
+            background: rgba($fiery-rose, 0.85);
+          }
+        }
+
+        .note-list {
+          div {
+            display: flex;
+            justify-content: space-between;
+
+            padding: 1rem;
+
+            &:not(:last-child) {
+              border-bottom: 1px rgba($megaman-blue, 0.25) solid;
+            }
+
+            button {
+              background: none;
+              border: none;
+              cursor: pointer;
+
+              svg {
+                color: $ghost-white;
+              }
+            }
           }
         }
       }

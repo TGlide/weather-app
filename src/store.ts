@@ -1,6 +1,8 @@
 import {
   Action,
   action,
+  computed,
+  Computed,
   createStore,
   createTypedHooks,
   persist,
@@ -23,6 +25,11 @@ interface StoreModel {
   setSelectedAddress: Action<StoreModel, Location>;
   setSelectedCity: Action<StoreModel, LocationData>;
   clearSelectedCity: Action<StoreModel>;
+
+  notes: { [key: string]: string[] };
+  selectedNotes: Computed<StoreModel, string[]>;
+  addNote: Action<StoreModel, { location: Location; note: string }>;
+  deleteNote: Action<StoreModel, { location: Location; index: number }>;
 }
 
 export const store = createStore<StoreModel>({
@@ -46,7 +53,28 @@ export const store = createStore<StoreModel>({
   clearSelectedCity: action((state) => {
     state.selectedCity = {};
   }),
+
+  notes: persist({}, { storage: "localStorage" }),
+  selectedNotes: computed((state) => {
+    if (!state.selectedCity.address) return [];
+    const key = state.selectedCity.address.getKey();
+    return state.notes[key];
+  }),
+  addNote: action((state, payload) => {
+    const key = payload.location.getKey();
+    if (state.notes[key]) state.notes[key].push(payload.note);
+    else state.notes[key] = [payload.note];
+  }),
+  deleteNote: action((state, payload) => {
+    const key = payload.location.getKey();
+    if (!state.notes[key]) return;
+    state.notes[key].splice(payload.index, 1);
+  }),
 });
+
+// store.persist.clear().then(() => {
+//   console.log("Persisted state has been removed");
+// });
 
 const typedHooks = createTypedHooks<StoreModel>();
 

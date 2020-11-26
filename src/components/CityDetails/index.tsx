@@ -1,12 +1,13 @@
-import React, { useCallback, useEffect } from "react";
-import { Daily, getWeather } from "../../api/getWeather";
-import { useStoreActions, useStoreState } from "../../store";
-import WeatherIcon from "../WeatherIcon";
-import { ReactComponent as X } from "../../assets/icons/x.svg";
-import "./styles.scss";
 import { fromUnixTime, isToday } from "date-fns";
-import { formatDatetime } from "../../utils/date";
+import React, { useCallback, useEffect, useState } from "react";
+import { Daily, getWeather } from "../../api/getWeather";
+import { ReactComponent as X } from "../../assets/icons/x.svg";
 import useComponentVisible from "../../hooks/useComponentVisible";
+import { useStoreActions, useStoreState } from "../../store";
+import "../../styles/layout.scss";
+import { formatDatetime } from "../../utils/date";
+import WeatherIcon from "../WeatherIcon";
+import "./styles.scss";
 
 interface CityDetailsProps {}
 
@@ -18,15 +19,17 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
     (actions) => actions.setSelectedWeather
   );
   const selectedCity = useStoreState((state) => state.selectedCity);
+  const notes = useStoreState((state) => state.selectedNotes);
+  const addNote = useStoreActions((actions) => actions.addNote);
+  const deleteNote = useStoreActions((actions) => actions.deleteNote);
 
   const handleClose = useCallback(() => {
-    console.log("sc", selectedCity);
-    console.log("clear", clearSelectedCity);
-
     clearSelectedCity();
-  }, [clearSelectedCity, selectedCity]);
+  }, [clearSelectedCity]);
 
   const { ref } = useComponentVisible(false, handleClose);
+
+  const [noteInput, setNoteInput] = useState("");
 
   const renderDay = (day: Daily) => {
     if (isToday(fromUnixTime(day.dt))) return null;
@@ -60,7 +63,9 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
       <div className="container">
         <div className="modal" ref={ref}>
           <div className="header">
-            <h1>{selectedCity.address.name}</h1>
+            <h1>
+              {selectedCity.address.name} {selectedCity.address.getKey()}
+            </h1>
 
             <button
               onClick={(e) => {
@@ -96,6 +101,41 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
           ) : (
             <div className={`loading`}>Loading...</div>
           )}
+          <div className="notes">
+            <h2>Notes</h2>
+            <textarea
+              placeholder="Write a note..."
+              value={noteInput}
+              onChange={(e) => setNoteInput(e.target.value)}
+            />
+            <button
+              className={`create-note`}
+              onClick={() => {
+                if (selectedCity.address)
+                  addNote({ location: selectedCity.address, note: noteInput });
+              }}
+            >
+              Create note
+            </button>
+            <div className="note-list">
+              {notes?.map((note, idx) => (
+                <div key={idx}>
+                  <span>{note}</span>{" "}
+                  <button
+                    onClick={() => {
+                      if (selectedCity.address)
+                        deleteNote({
+                          location: selectedCity.address,
+                          index: idx,
+                        });
+                    }}
+                  >
+                    <X />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

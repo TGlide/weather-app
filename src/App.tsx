@@ -13,7 +13,7 @@ function App() {
     <div className="App">
       <CurrentWeather coords={coords} error={posError} />
       <Search />
-      <CityList />
+      {/* <CityList /> */}
 
       <CityDetails />
     </div>

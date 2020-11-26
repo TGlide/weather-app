@@ -1,14 +1,18 @@
 import { CityDatum } from "../api/getCities";
 import { LocationResponse, Result } from "../api/types/LocationResponse";
+import { roundTo1Decimal } from "../utils/math";
 
 export class Location {
   constructor(
     public name: string,
-    public longitude: string | number,
-    public latitude: string | number,
+    public longitude: number,
+    public latitude: number,
     public country?: string,
     public city?: string
-  ) {}
+  ) {
+    this.latitude = roundTo1Decimal(latitude);
+    this.longitude = roundTo1Decimal(longitude);
+  }
 
   static fromLocationResponse(response: LocationResponse) {
     return this.fromLocationResult(response.results?.[0]);
@@ -20,6 +24,7 @@ export class Location {
     let name = "";
     if (!(municipality || city)) name = result?.formatted || country;
     else name = `${municipality || city || state}, ${country}`;
+    name += result.components.state_code || "";
     return new Location(name, lng, lat, country, city || municipality);
   }
 
@@ -31,5 +36,10 @@ export class Location {
       datum.country,
       datum.city
     );
+  }
+
+  getKey() {
+    const key = `${this.latitude},${this.longitude}`;
+    return key;
   }
 }
