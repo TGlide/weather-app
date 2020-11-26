@@ -13,15 +13,15 @@ interface CityDetailsProps {}
 
 const CityDetails: React.FC<CityDetailsProps> = () => {
   const clearSelectedCity = useStoreActions(
-    (actions) => actions.clearSelectedCity
+    (actions) => actions.selectedCity.clear
   );
   const setSelectedWeather = useStoreActions(
-    (actions) => actions.setSelectedWeather
+    (actions) => actions.selectedCity.setWeather
   );
-  const selectedCity = useStoreState((state) => state.selectedCity);
+  const selectedCity = useStoreState((state) => state.selectedCity.data);
   const notes = useStoreState((state) => state.selectedNotes);
-  const addNote = useStoreActions((actions) => actions.addNote);
-  const deleteNote = useStoreActions((actions) => actions.deleteNote);
+  const addNote = useStoreActions((actions) => actions.notes.add);
+  const deleteNote = useStoreActions((actions) => actions.notes.delete);
 
   const handleClose = useCallback(() => {
     clearSelectedCity();

@@ -19,7 +19,7 @@ const Search: React.FC<SearchProps> = () => {
   >(undefined);
 
   const setSelectedAddress = useStoreActions(
-    (actions) => actions.setSelectedAddress
+    (actions) => actions.selectedCity.setAddress
   );
 
   const { ref, isComponentVisible } = useComponentVisible(false);
