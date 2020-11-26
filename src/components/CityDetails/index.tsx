@@ -6,6 +6,7 @@ import { ReactComponent as X } from "../../assets/icons/x.svg";
 import "./styles.scss";
 import { fromUnixTime, isToday } from "date-fns";
 import { formatDatetime } from "../../utils/date";
+import useComponentVisible from "../../hooks/useComponentVisible";
 
 interface CityDetailsProps {}
 
@@ -17,6 +18,26 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
     (actions) => actions.setSelectedWeather
   );
   const selectedCity = useStoreState((state) => state.selectedCity);
+
+  const handleClose = useCallback(() => {
+    console.log("sc", selectedCity);
+    console.log("clear", clearSelectedCity);
+
+    clearSelectedCity();
+  }, [clearSelectedCity, selectedCity]);
+
+  const { ref } = useComponentVisible(false, handleClose);
+
+  const renderDay = (day: Daily) => {
+    if (isToday(fromUnixTime(day.dt))) return null;
+    return (
+      <div className="day" key={day.dt}>
+        <WeatherIcon iconCode={day.weather[0].icon} />
+        <span className="temp">{Math.round(day.temp.day)}°</span>
+        <span className={`date`}>{formatDatetime(day.dt)}</span>
+      </div>
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,30 +53,12 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
     if (!selectedCity.weather) fetchData();
   }, [selectedCity.address, selectedCity.weather, setSelectedWeather]);
 
-  const handleClose = useCallback(() => {
-    console.log("sc", selectedCity);
-    console.log("clear", clearSelectedCity);
-
-    clearSelectedCity();
-  }, [clearSelectedCity, selectedCity]);
-
   if (!selectedCity.address) return null;
 
-  const renderDay = (day: Daily) => {
-    if (isToday(fromUnixTime(day.dt))) return null;
-    return (
-      <div className="day" key={day.dt}>
-        <WeatherIcon iconCode={day.weather[0].icon} />
-        <span className="temp">{Math.round(day.temp.day)}°</span>
-        <span className={`date`}>{formatDatetime(day.dt)}</span>
-      </div>
-    );
-  };
-
   return (
-    <div className={`city-details`} onClick={handleClose}>
+    <div className={`city-details`}>
       <div className="container">
-        <div className="modal">
+        <div className="modal" ref={ref}>
           <div className="header">
             <h1>{selectedCity.address.name}</h1>
 

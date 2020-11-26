@@ -1,6 +1,9 @@
 import { useState, useEffect, useRef } from "react";
 
-export default function useComponentVisible(initialIsVisible: boolean) {
+export default function useComponentVisible(
+  initialIsVisible: boolean,
+  outsideCallback?: Function
+) {
   const [isComponentVisible, setIsComponentVisible] = useState(
     initialIsVisible
   );
@@ -16,6 +19,7 @@ export default function useComponentVisible(initialIsVisible: boolean) {
     // Click outside
     if (ref.current && !ref.current.contains(event.target as Node)) {
       setIsComponentVisible(false);
+      outsideCallback?.();
     } else {
       setIsComponentVisible(true);
     }
