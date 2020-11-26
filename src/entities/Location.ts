@@ -16,7 +16,7 @@ export class Location {
 
   static fromLocationResult(result: Result) {
     const { city, municipality, country, state } = result.components;
-    const { lat, lng } = result.annotations.DMS;
+    const { lat, lng } = result.geometry;
     let name = "";
     if (!(municipality || city)) name = result?.formatted || country;
     else name = `${municipality || city || state}, ${country}`;

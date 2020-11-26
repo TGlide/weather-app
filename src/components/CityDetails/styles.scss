@@ -12,10 +12,90 @@
   display: grid;
   place-items: center;
 
-  .modal {
-    background-color: $eerie-black;
-    border-radius: 0.5rem;
+  .container {
+    width: 100%;
+    .modal {
+      background-color: $eerie-black;
+      border-radius: 0.5rem;
 
-    padding: 1rem;
+      padding: 2rem 1.5rem;
+      width: 100%;
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h1 {
+          font-family: Poppins, sans-serif;
+          font-weight: 500;
+          font-size: 1.5rem;
+          margin: 0;
+        }
+
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+
+          svg {
+            color: $ghost-white;
+          }
+        }
+      }
+
+      .weather-info {
+        display: flex;
+        align-items: center;
+        margin-top: 1.25rem;
+
+        .icon {
+          width: 5rem;
+          height: 5rem;
+        }
+
+        .details {
+          margin-left: 2rem;
+          .temperature {
+            font-family: Poppins, sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .daily-weather {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        margin-top: 3rem;
+
+        .day {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 5rem;
+          flex-shrink: 0;
+
+          padding: 0 0.75rem;
+
+          .icon {
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+
+          .temp {
+            font-weight: bold;
+            font-size: 1.275rem;
+            margin-top: 0.25rem;
+          }
+
+          .date {
+            font-weight: 200;
+          }
+        }
+      }
+    }
   }
 }
