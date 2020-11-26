@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { searchLocations } from "../../api/searchLocations";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
 import { Location } from "../../entities/Location";
@@ -21,7 +21,7 @@ const Search: React.FC<SearchProps> = () => {
     (actions) => actions.setSelectedAddress
   );
 
-  const { ref, isComponentVisible } = useComponentVisible(true);
+  const { ref, isComponentVisible } = useComponentVisible(false);
 
   const handleSearch = async (input: string | undefined) => {
     if (!input) return;

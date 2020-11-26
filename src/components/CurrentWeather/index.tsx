@@ -1,5 +1,5 @@
 import { fromUnixTime, isToday } from "date-fns";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { getAddress } from "../../api/getAddress";
 import { Daily, getWeather } from "../../api/getWeather";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
@@ -42,10 +42,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
   const renderDay = (date: Daily) => {
     return (
       <div className="day" key={date.dt}>
-        <WeatherIcon
-          iconCode={date.weather[0].icon || "09d"}
-          className={`icon`}
-        />
+        <WeatherIcon iconCode={date.weather[0].icon} className={`icon`} />
         <span className="temp">{Math.round(date.temp.day)}°</span>
         <span className={`date`}>
           {isToday(fromUnixTime(date.dt)) ? "Today" : formatDatetime(date.dt)}
