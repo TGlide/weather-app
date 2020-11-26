@@ -38,8 +38,8 @@ export class Location {
     );
   }
 
-  getKey() {
-    const key = `${this.latitude},${this.longitude}`;
+  static getKey(location: Location) {
+    const key = `${location.latitude},${location.longitude}`;
     return key;
   }
 }

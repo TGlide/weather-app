@@ -71,12 +71,12 @@ const Search: React.FC<SearchProps> = () => {
     return (
       <div className="results-list">
         {searchResults.map((result) => {
-          if (usedKeys.includes(result.getKey())) return null;
-          usedKeys.push(result.getKey());
+          if (usedKeys.includes(Location.getKey(result))) return null;
+          usedKeys.push(Location.getKey(result));
 
           return (
             <div
-              key={result.getKey()}
+              key={Location.getKey(result)}
               onClick={() => setSelectedAddress(result)}
             >
               {result.name}

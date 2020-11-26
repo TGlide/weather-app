@@ -2,6 +2,7 @@ import { fromUnixTime, isToday } from "date-fns";
 import React, { useCallback, useEffect, useState } from "react";
 import { Daily, getWeather } from "../../api/getWeather";
 import { ReactComponent as X } from "../../assets/icons/x.svg";
+import { Location } from "../../entities/Location";
 import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions, useStoreState } from "../../store";
 import "../../styles/layout.scss";
@@ -64,7 +65,8 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
         <div className="modal" ref={ref}>
           <div className="header">
             <h1>
-              {selectedCity.address.name} {selectedCity.address.getKey()}
+              {selectedCity.address.name}{" "}
+              {Location.getKey(selectedCity.address)}
             </h1>
 
             <button
