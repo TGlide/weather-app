@@ -22,10 +22,11 @@ interface StoreModel {
   setSelectedWeather: Action<StoreModel, WeatherResponse>;
   setSelectedAddress: Action<StoreModel, Location>;
   setSelectedCity: Action<StoreModel, LocationData>;
+  clearSelectedCity: Action<StoreModel>;
 }
 
 export const store = createStore<StoreModel>({
-  location: persist({}, { storage: "localStorage" }),
+  location: persist({}, { storage: "sessionStorage" }),
   selectedCity: {},
   setWeather: action((state, payload) => {
     state.location.weather = payload;
@@ -41,6 +42,9 @@ export const store = createStore<StoreModel>({
   }),
   setSelectedCity: action((state, payload) => {
     state.selectedCity = payload;
+  }),
+  clearSelectedCity: action((state) => {
+    state.selectedCity = {};
   }),
 });
 

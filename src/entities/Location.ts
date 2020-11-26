@@ -1,5 +1,5 @@
 import { CityDatum } from "../api/getCities";
-import { LocationResponse } from "../api/types/LocationResponse";
+import { LocationResponse, Result } from "../api/types/LocationResponse";
 
 export class Location {
   constructor(
@@ -11,9 +11,15 @@ export class Location {
   ) {}
 
   static fromLocationResponse(response: LocationResponse) {
-    const { city, municipality, country } = response.results?.[0].components;
-    const { lat, lng } = response.results?.[0].annotations.DMS;
-    const name = `${municipality || city}, ${country}`;
+    return this.fromLocationResult(response.results?.[0]);
+  }
+
+  static fromLocationResult(result: Result) {
+    const { city, municipality, country, state } = result.components;
+    const { lat, lng } = result.annotations.DMS;
+    let name = "";
+    if (!(municipality || city)) name = result?.formatted || country;
+    else name = `${municipality || city || state}, ${country}`;
     return new Location(name, lng, lat, country, city || municipality);
   }
 

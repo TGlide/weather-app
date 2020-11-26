@@ -11,11 +11,10 @@ function App() {
 
   return (
     <div className="App">
-      <div>
-        <CurrentWeather coords={coords} error={posError} />
-        <Search />
-        <CityList />
-      </div>
+      <CurrentWeather coords={coords} error={posError} />
+      <Search />
+      <CityList />
+
       <CityDetails />
     </div>
   );

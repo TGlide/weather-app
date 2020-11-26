@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getWeather, WeatherResponse } from "../../../api/getWeather";
 import { ReactComponent as X } from "../../../assets/icons/x.svg";
 import { Location } from "../../../entities/Location";
+import { useStoreActions } from "../../../store";
 import WeatherIcon from "../../WeatherIcon";
 import "./styles.scss";
 
@@ -14,6 +15,12 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
     undefined
   );
   const [hidden, setHidden] = useState(false);
+  const setSelectedAddress = useStoreActions(
+    (actions) => actions.setSelectedAddress
+  );
+  const setSelectedWeather = useStoreActions(
+    (actions) => actions.setSelectedWeather
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,8 +38,13 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
 
   if (hidden) return null;
 
+  const handleClick = () => {
+    setSelectedAddress(city);
+    if (weatherInfo) setSelectedWeather(weatherInfo);
+  };
+
   return (
-    <div className={`city-card`}>
+    <div className={`city-card`} onClick={handleClick}>
       <div className="weather-info">
         {weatherInfo && (
           <>
@@ -50,7 +62,12 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
         <span className={`city-name`}>{city.name}</span>
         <span className={`country-name`}>{city.country}</span>
       </div>
-      <button onClick={() => setHidden(true)}>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          setHidden(true);
+        }}
+      >
         <X style={{ color: "white", fill: "currentcolor" }} />
       </button>
     </div>

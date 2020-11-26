@@ -21,11 +21,12 @@
 
     &:hover,
     &.searching,
-    &:focus-within {
+    &:focus-within,
+    &.active {
       background-color: rgba($columbia-blue, 0.65);
     }
 
-    &.searching:focus-within {
+    &.active.searching {
       border-radius: 0.5rem 0.5rem 0 0;
     }
 
@@ -85,9 +86,5 @@
         padding: 1rem;
       }
     }
-  }
-
-  .search-bar:not(:focus-within) + .search-results {
-    display: none;
   }
 }

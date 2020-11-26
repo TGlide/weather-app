@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { searchLocations } from "../../api/searchLocations";
-import { LocationResponse } from "../../api/types/LocationResponse";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
-
+import { Location } from "../../entities/Location";
+import useComponentVisible from "../../hooks/useComponentVisible";
+import { useStoreActions } from "../../store";
 import "./styles.scss";
 
 interface SearchProps {}
@@ -13,8 +14,14 @@ const Search: React.FC<SearchProps> = () => {
     NodeJS.Timeout | undefined
   >(undefined);
   const [searchResults, setSearchResults] = useState<
-    LocationResponse | string | undefined
+    Location[] | string | undefined
   >(undefined);
+
+  const setSelectedAddress = useStoreActions(
+    (actions) => actions.setSelectedAddress
+  );
+
+  const { ref, isComponentVisible } = useComponentVisible(true);
 
   const handleSearch = async (input: string | undefined) => {
     if (!input) return;
@@ -25,7 +32,10 @@ const Search: React.FC<SearchProps> = () => {
     try {
       const resp = await searchLocations(input);
       if (resp.data.results.length === 0) handleError();
-      else setSearchResults(resp.data);
+      else
+        setSearchResults(
+          resp.data.results.map((result) => Location.fromLocationResult(result))
+        );
     } catch {
       handleError();
     }
@@ -57,9 +67,14 @@ const Search: React.FC<SearchProps> = () => {
 
     return (
       <div className="results-list">
-        {searchResults.results.map((result) => {
+        {searchResults.map((result) => {
           return (
-            <div key={result?.annotations?.geohash}>{result?.formatted}</div>
+            <div
+              key={`${result.longitude}${result.latitude}`}
+              onClick={() => setSelectedAddress(result)}
+            >
+              {result.name}
+            </div>
           );
         })}
       </div>
@@ -67,8 +82,12 @@ const Search: React.FC<SearchProps> = () => {
   };
 
   return (
-    <div className="container search-container">
-      <div className={`search-bar ${searchInput && "searching"}`}>
+    <div className="container search-container" ref={ref}>
+      <div
+        className={`search-bar ${searchInput && "searching"} ${
+          isComponentVisible && "active"
+        }`}
+      >
         <SearchIcon />
         <input
           type="text"
@@ -77,7 +96,7 @@ const Search: React.FC<SearchProps> = () => {
           onChange={handleSearchInput}
         />
       </div>
-      {searchInput && (
+      {searchInput && isComponentVisible && (
         <div className="search-results">
           <div className="search-results-card">{renderSearchResults()}</div>
         </div>

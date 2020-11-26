@@ -13,6 +13,11 @@
     margin-bottom: 1rem;
   }
 
+  &:hover {
+    cursor: pointer;
+    background-color: lighten($eerie-black, 5);
+  }
+
   .weather-info {
     display: flex;
     flex-direction: column;
