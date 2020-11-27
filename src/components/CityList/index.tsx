@@ -32,7 +32,7 @@ const CityList: React.FC<CityListProps> = () => {
         return a.name.localeCompare(b.name);
       });
 
-      for (let cityDatum of cityDatums) {
+      for (const cityDatum of cityDatums) {
         const weatherResp = await getWeather({
           latitude: cityDatum.latitude,
           longitude: cityDatum.longitude,
