@@ -21,6 +21,8 @@
 ## Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
+  - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
@@ -30,6 +32,22 @@
 
 <!-- ABOUT THE PROJECT -->
 
+## About The Project
+
+This repo was initialized with Create React App, using a Typescript template.
+
+### Built With
+
+-   Frontend
+    -   [React](https://reactjs.org/)
+    -   [Typescript](https://www.typescriptlang.org/)
+-   Tests
+    -   [Jest](https://jestjs.io/)
+    -   [React Testing Library](https://testing-library.com/)
+-   Styling
+    -   [SCSS](https://sass-lang.com/)
+-   Extra packages
+    -   [Store: Easy Peasy](https://easy-peasy.now.sh/)
 
 ## Getting Started
 
