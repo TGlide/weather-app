@@ -23,7 +23,6 @@
   - [Installation](#installation)
 - [Usage](#usage)
   - [Run App](#run-app)
-- [Contributing](#contributing)
 
 <!-- ABOUT THE PROJECT -->
 
