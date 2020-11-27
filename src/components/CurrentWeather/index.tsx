@@ -1,9 +1,11 @@
 import { fromUnixTime, isToday } from "date-fns";
 import React, { useEffect } from "react";
 import { getAddress } from "../../api/getAddress";
-import { Daily, getWeather } from "../../api/getWeather";
+import { getWeather } from "../../api/getWeather";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
+import { City } from "../../entities/City";
 import { Location } from "../../entities/Location";
+import { DailyData, Weather } from "../../entities/Weather";
 import { useStoreActions, useStoreState } from "../../store";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
@@ -15,15 +17,8 @@ interface CurrentWeatherProps {
 }
 
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
-  const weatherData = useStoreState((state) => state.location.data.weather);
-  const setWeatherData = useStoreActions(
-    (actions) => actions.location.setWeather
-  );
-  const addressData = useStoreState((state) => state.location.data.address);
-  const setAddressData = useStoreActions(
-    (actions) => actions.location.setAddress
-  );
-
+  const userCity = useStoreState((state) => state.userCity.data);
+  const setCurrentLocation = useStoreActions((actions) => actions.userCity.set);
   const setSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.set
   );
@@ -31,24 +26,24 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!coords) return;
-      getWeather(coords).then((res) => {
-        setWeatherData(res.data);
-      });
+      const weatherResp = await getWeather(coords);
+      const locationResponse = await getAddress(coords);
 
-      getAddress(coords).then((res) => {
-        setAddressData(Location.fromLocationResponse(res.data));
-      });
+      const weather = Weather.fromWeatherResponse(weatherResp.data);
+      const location = Location.fromLocationResponse(locationResponse.data);
+      const city = new City(location, weather);
+      setCurrentLocation(city);
     };
 
     if (coords) {
       fetchData();
     }
-  }, [coords, setWeatherData, setAddressData]);
+  }, [coords, setCurrentLocation]);
 
-  const renderDay = (date: Daily) => {
+  const renderDay = (date: DailyData) => {
     return (
       <div className="day" key={date.dt}>
-        <WeatherIcon iconCode={date.weather[0].icon} className={`icon`} />
+        <WeatherIcon iconCode={date.icon} className={`icon`} />
         <span className="temp">{Math.round(date.temp.day)}°</span>
         <span className={`date`}>
           {isToday(fromUnixTime(date.dt)) ? "Today" : formatDatetime(date.dt)}
@@ -61,7 +56,7 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
     return <div className={`pos-error`}>We couldn't get your location.</div>;
   }
 
-  if (!weatherData || !addressData) {
+  if (!userCity || !userCity.weather) {
     return <div className={`pos-loading`}>Getting your location...</div>;
   }
 
@@ -69,28 +64,25 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
     <div className="current-weather">
       <div className="location">
         <MapPin />
-        <span>{addressData.name}</span>
+        <span>{userCity.location.name}</span>
       </div>
 
       <WeatherIcon
-        iconCode={weatherData.current.weather[0].icon}
+        iconCode={userCity.weather.current.icon}
         className={`weather-icon`}
       />
-      <span className="main-temp">{Math.round(weatherData.current.temp)}°</span>
+      <span className="main-temp">
+        {Math.round(userCity.weather.current.temp)}°
+      </span>
 
       <div className="days-container">
         <div className="days">
-          {weatherData.daily.map((date) => renderDay(date))}
+          {userCity.weather.daily.map((date) => renderDay(date))}
         </div>
         <div className="opacity-overlay"></div>
       </div>
 
-      <button
-        className={`details`}
-        onClick={() =>
-          setSelectedCity({ address: addressData, weather: weatherData })
-        }
-      >
+      <button className={`details`} onClick={() => setSelectedCity(userCity)}>
         More details
       </button>
     </div>

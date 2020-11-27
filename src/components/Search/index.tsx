@@ -6,6 +6,7 @@ import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions } from "../../store";
 import "./styles.scss";
 import "../../styles/layout.scss";
+import { City } from "../../entities/City";
 
 interface SearchProps {}
 
@@ -18,8 +19,8 @@ const Search: React.FC<SearchProps> = () => {
     Location[] | string | undefined
   >(undefined);
 
-  const setSelectedAddress = useStoreActions(
-    (actions) => actions.selectedCity.setAddress
+  const setSelectedCity = useStoreActions(
+    (actions) => actions.selectedCity.set
   );
 
   const { ref, isComponentVisible } = useComponentVisible(false);
@@ -77,7 +78,7 @@ const Search: React.FC<SearchProps> = () => {
           return (
             <div
               key={Location.getKey(result)}
-              onClick={() => setSelectedAddress(result)}
+              onClick={() => setSelectedCity(new City(result))}
             >
               {result.name}
             </div>

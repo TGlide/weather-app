@@ -1,9 +1,11 @@
 import { fromUnixTime, isToday } from "date-fns";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Daily, getWeather } from "../../api/getWeather";
-import { ReactComponent as X } from "../../assets/icons/x.svg";
+import { getWeather } from "../../api/getWeather";
 import { ReactComponent as Star } from "../../assets/icons/star.svg";
+import { ReactComponent as X } from "../../assets/icons/x.svg";
+import { City } from "../../entities/City";
 import { Location } from "../../entities/Location";
+import { DailyData, Weather } from "../../entities/Weather";
 import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions, useStoreState } from "../../store";
 import "../../styles/layout.scss";
@@ -18,8 +20,8 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
   const clearSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.clear
   );
-  const setSelectedWeather = useStoreActions(
-    (actions) => actions.selectedCity.setWeather
+  const setSelectedCity = useStoreActions(
+    (actions) => actions.selectedCity.set
   );
   const selectedCity = useStoreState((state) => state.selectedCity.data);
   const notes = useStoreState((state) => state.selectedNotes);
@@ -36,16 +38,17 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
   const [noteInput, setNoteInput] = useState("");
 
   const isFavorite = useMemo(() => {
-    if (!selectedCity.address) return false;
-    const key = Location.getKey(selectedCity.address);
-    return Object.keys(favorites).includes(key);
-  }, [favorites, selectedCity.address]);
+    if (!selectedCity) return false;
 
-  const renderDay = (day: Daily) => {
+    const key = Location.getKey(selectedCity.location);
+    return Object.keys(favorites).includes(key);
+  }, [favorites, selectedCity]);
+
+  const renderDay = (day: DailyData) => {
     if (isToday(fromUnixTime(day.dt))) return null;
     return (
       <div className="day" key={day.dt}>
-        <WeatherIcon iconCode={day.weather[0].icon} />
+        <WeatherIcon iconCode={day.icon} />
         <span className="temp">{Math.round(day.temp.day)}°</span>
         <span className={`date`}>{formatDatetime(day.dt)}</span>
       </div>
@@ -54,19 +57,23 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!selectedCity.address) return;
+      if (!selectedCity) return;
       const resp = await getWeather({
-        latitude: selectedCity.address.latitude,
-        longitude: selectedCity.address.longitude,
+        latitude: selectedCity.location.latitude,
+        longitude: selectedCity.location.longitude,
       });
-      setSelectedWeather(resp.data);
+      const newCity = new City(
+        selectedCity.location,
+        Weather.fromWeatherResponse(resp.data)
+      );
+      setSelectedCity(newCity);
     };
 
-    if (!selectedCity.address) return;
+    if (!selectedCity) return;
     if (!selectedCity.weather) fetchData();
-  }, [selectedCity.address, selectedCity.weather, setSelectedWeather]);
+  }, [selectedCity, setSelectedCity]);
 
-  if (selectedCity.address === undefined) return null;
+  if (selectedCity === undefined) return null;
 
   return (
     <div className={`city-details`}>
@@ -74,13 +81,13 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
         <div className="modal" ref={ref}>
           <div className="header">
             <h1>
-              {selectedCity.address.name}{" "}
-              {Location.getKey(selectedCity.address)}
+              {selectedCity.location.name}{" "}
+              {Location.getKey(selectedCity.location)}
             </h1>
             <button
               className={`star`}
               onClick={() => {
-                if (selectedCity.address) toggleFavorite(selectedCity.address);
+                toggleFavorite(selectedCity);
               }}
             >
               <Star className={`${isFavorite && "filled"}`} />
@@ -99,7 +106,7 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
             <>
               <div className={`weather-info`}>
                 <WeatherIcon
-                  iconCode={selectedCity.weather.current.weather[0].icon}
+                  iconCode={selectedCity.weather.current.icon}
                   className={`icon`}
                 />
                 <div className={`details`}>
@@ -130,21 +137,21 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
             <button
               className={`create-note`}
               onClick={() => {
-                if (selectedCity.address)
-                  addNote({ location: selectedCity.address, note: noteInput });
+                if (selectedCity.location)
+                  addNote({ location: selectedCity.location, note: noteInput });
               }}
             >
               Create note
             </button>
             <div className="note-list">
               {notes?.map((note, idx) => {
-                if (!selectedCity.address) return null;
+                if (!selectedCity.location) return null;
                 return (
                   <Note
                     key={idx}
                     index={idx}
                     note={note}
-                    location={selectedCity.address}
+                    location={selectedCity.location}
                   />
                 );
               })}

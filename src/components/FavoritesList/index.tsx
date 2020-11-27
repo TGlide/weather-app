@@ -10,8 +10,8 @@ const FavoritesList: React.FC<FavoritesListProps> = () => {
   return (
     <div className="container favorites-list">
       <h1>Favorites</h1>
-      {Object.entries(favorites).map(([key, location]) => (
-        <CityCard city={location} key={key} />
+      {Object.entries(favorites).map(([key, city]) => (
+        <CityCard city={city} key={key} />
       ))}
     </div>
   );

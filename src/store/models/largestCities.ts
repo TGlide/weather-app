@@ -1,9 +1,9 @@
 import { Action, action } from "easy-peasy";
-import { Location } from "../../entities/Location";
+import { City } from "../../entities/City";
 
 export interface LargestCitiesModel {
-  data: Location[];
-  set: Action<LargestCitiesModel, Location[]>;
+  data: City[];
+  set: Action<LargestCitiesModel, City[]>;
 }
 
 export const largestCitiesModel: LargestCitiesModel = {

@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { CityDatum, getCitiesByPopulation } from "../../api/getCities";
+import { getWeather } from "../../api/getWeather";
+import { City } from "../../entities/City";
 import { Location } from "../../entities/Location";
+import { Weather } from "../../entities/Weather";
 import { useStoreActions, useStoreState } from "../../store";
 import { sleep } from "../../utils/time";
 import CityCard from "../CityCard";
@@ -16,19 +19,32 @@ const CityList: React.FC<CityListProps> = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const cities: CityDatum[] = [];
+      const cities: City[] = [];
+      const cityDatums: CityDatum[] = [];
 
       for (let offset = 0; offset <= 10; offset += 5) {
         const response = await getCitiesByPopulation(offset);
-        cities.push(...response.data.data);
+        cityDatums.push(...response.data.data);
         await sleep(2000);
       }
 
-      cities.sort((a, b) => {
+      cityDatums.sort((a, b) => {
         return a.name.localeCompare(b.name);
       });
 
-      setLargestCities(cities.map((city) => Location.fromCityDatum(city)));
+      for (let cityDatum of cityDatums) {
+        const weatherResp = await getWeather({
+          latitude: cityDatum.latitude,
+          longitude: cityDatum.longitude,
+        });
+        const city = new City(
+          Location.fromCityDatum(cityDatum),
+          Weather.fromWeatherResponse(weatherResp.data)
+        );
+        cities.push(city);
+      }
+
+      setLargestCities(cities);
     };
 
     fetchData();
@@ -46,7 +62,13 @@ const CityList: React.FC<CityListProps> = () => {
     <div className={`container city-list`}>
       <h1>Largest Cities</h1>
       {largestCities.map((city) => {
-        return <CityCard city={city} key={city.name} removeable={true} />;
+        return (
+          <CityCard
+            city={city}
+            key={Location.getKey(city.location)}
+            removeable={true}
+          />
+        );
       })}
     </div>
   );
