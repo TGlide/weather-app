@@ -1,0 +1,14 @@
+@import "./styles/variables.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  height: 100vh;
+  background-color: $night-black;
+  color: $ghost-white;
+
+  position: relative;
+  overflow-y: scroll;
+}

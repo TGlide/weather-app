@@ -1,0 +1,90 @@
+@import "../../styles/variables.scss";
+
+.search-container {
+  margin-bottom: 1.5rem;
+
+  .search-bar {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 3.5rem;
+
+    background-color: rgba($columbia-blue, 0.5);
+    border-radius: 0.5rem;
+
+    padding: 0rem 1rem;
+    margin-bottom: 0rem;
+    margin-top: 1.5rem;
+    z-index: 10;
+
+    &:hover,
+    &.searching,
+    &:focus-within,
+    &.active {
+      background-color: rgba($columbia-blue, 0.65);
+    }
+
+    &.active.searching {
+      border-radius: 0.5rem 0.5rem 0 0;
+    }
+
+    input {
+      flex-grow: 1;
+      height: 2rem;
+
+      font-family: Lato, sans-serif;
+      font-size: 1.25rem;
+
+      border: none;
+      background: none;
+      color: $ghost-white;
+      outline: none;
+
+      margin-left: 1rem;
+
+      &::placeholder {
+        color: $ghost-white;
+      }
+    }
+  }
+
+  .search-results {
+    position: relative;
+    z-index: 0;
+
+    .search-results-card {
+      position: absolute;
+      background: #7b91a2;
+      border-radius: 0 0 0.5rem 0.5rem;
+
+      width: 100%;
+      top: 0;
+      border-top: 3px rgba($megaman-blue, 0.5) solid;
+
+      @supports (backdrop-filter: blur(2em)) {
+        background: rgba($columbia-blue, 0.65);
+        backdrop-filter: blur(16px);
+      }
+
+      .results-list {
+        display: flex;
+        flex-direction: column;
+
+        div {
+          padding: 1rem;
+
+          &:hover {
+            background: rgba(black, 0.25);
+            cursor: pointer;
+          }
+        }
+      }
+
+      .searching {
+        padding: 1rem;
+      }
+    }
+  }
+}

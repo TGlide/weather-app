@@ -1,0 +1,170 @@
+@import "../../styles//variables.scss";
+
+.city-details {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(black, 0.5);
+  z-index: 20;
+
+  display: grid;
+  place-items: center;
+  overflow-y: scroll;
+
+  .container {
+    width: 100%;
+
+    .modal {
+      background-color: $eerie-black;
+      border-radius: 0.5rem;
+
+      padding: 2rem 1.5rem;
+      width: 100%;
+
+      .header {
+        display: flex;
+        align-items: center;
+
+        h1 {
+          font-family: Poppins, sans-serif;
+          font-weight: 500;
+          font-size: 1.5rem;
+          margin: 0;
+        }
+
+        button {
+          background: none;
+          border: none;
+          cursor: pointer;
+        }
+
+        button.star {
+          margin-left: auto;
+          svg {
+            color: $star-yellow;
+
+            &.filled {
+              fill: $star-yellow;
+            }
+          }
+        }
+
+        button.close {
+          margin-left: 1rem;
+          svg {
+            color: $ghost-white;
+          }
+        }
+      }
+
+      .weather-info {
+        display: flex;
+        align-items: center;
+        margin-top: 1.25rem;
+
+        .icon {
+          width: 5rem;
+          height: 5rem;
+        }
+
+        .details {
+          margin-left: 2rem;
+          .temperature {
+            font-family: Poppins, sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .daily-weather {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        flex-wrap: wrap;
+
+        margin-top: 2rem;
+
+        .day {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          width: 5rem;
+          flex-shrink: 0;
+
+          padding: 0 0.75rem;
+          margin-top: 1rem;
+
+          .icon {
+            width: 2.5rem;
+            height: 2.5rem;
+          }
+
+          .temp {
+            font-weight: bold;
+            font-size: 1.275rem;
+            margin-top: 0.25rem;
+          }
+
+          .date {
+            font-weight: 200;
+          }
+        }
+      }
+
+      .notes {
+        margin-top: 3rem;
+
+        h2 {
+          font-family: Lato, sans-serif;
+          font-weight: 300;
+          font-size: 1.75rem;
+        }
+
+        > textarea {
+          width: 100%;
+          height: 5rem;
+          resize: none;
+
+          background: rgba(black, 0.1);
+          border: 1px rgba($ghost-white, 0.5) solid;
+          border-radius: 0.25rem;
+          outline: none;
+
+          color: $ghost-white;
+          font-family: Lato, sans-serif;
+          font-size: 1rem;
+          font-weight: 400;
+
+          padding: 0.5rem 0.5rem;
+        }
+
+        .create-note {
+          display: block;
+
+          background: rgba($fiery-rose, 1);
+          border: none;
+          border-radius: 100px;
+
+          cursor: pointer;
+          font-family: Poppins, sans-serif;
+          font-weight: 600;
+          color: white;
+
+          padding: 0.5rem 1rem;
+          margin: 0.5rem auto 0;
+
+          &:hover {
+            background: rgba($fiery-rose, 0.85);
+          }
+        }
+
+        .note-list {
+          margin-top: 2rem;
+        }
+      }
+    }
+  }
+}

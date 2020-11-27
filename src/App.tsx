@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.scss";
+import CityDetails from "./components/CityDetails";
+import CityList from "./components/CityList";
+import CurrentWeather from "./components/CurrentWeather";
+import FavoritesList from "./components/FavoritesList";
+import Search from "./components/Search";
+import { usePosition } from "./hooks/usePosition";
 
 function App() {
+  const { coords, error: posError } = usePosition();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <CurrentWeather coords={coords} error={posError} />
+      <Search />
+      <FavoritesList />
+      <CityList />
+
+      <CityDetails />
     </div>
   );
 }

@@ -1,0 +1,128 @@
+@import "../../styles/variables.scss";
+
+.current-weather {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-family: Poppins, sans-serif;
+
+  padding-top: 3rem;
+
+  .location {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    span {
+      margin-left: 0.5rem;
+    }
+  }
+
+  .time {
+    font-weight: 300;
+    margin-top: 0.25rem;
+  }
+
+  .weather-icon {
+    margin-top: 2.5rem;
+    width: 8rem;
+    height: 8rem;
+  }
+
+  .main-temp {
+    font-weight: bold;
+    font-size: 3rem;
+  }
+
+  .days-container {
+    position: relative;
+    margin: 3.5rem auto 0;
+    display: flex;
+    justify-content: center;
+
+    .days {
+      display: flex;
+      // justify-content: center;
+      align-items: center;
+      max-width: 100vw;
+      overflow-x: scroll;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none; /* Firefox */
+
+      .day {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 5rem;
+        flex-shrink: 0;
+
+        padding: 0 0.75rem;
+
+        .icon {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+
+        .temp {
+          font-weight: bold;
+          font-size: 1.275rem;
+        }
+
+        .date {
+          font-weight: 200;
+        }
+      }
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    .opacity-overlay {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        rgba(0, 1, 26, 0.35) 0%,
+        rgba(0, 1, 26, 0) 50%,
+        rgba(0, 1, 26, 0.35) 100%
+      );
+      pointer-events: none;
+      opacity: 0;
+    }
+  }
+
+  .details {
+    background: none;
+    border: none;
+    border-bottom: 1px $megaman-blue solid;
+    color: $ghost-white;
+    cursor: pointer;
+
+    font-family: Lato, sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+
+    padding: 0;
+    margin-top: 1.5rem;
+  }
+}
+
+.pos-error {
+  width: 100%;
+  height: 50vh;
+
+  display: grid;
+  place-items: center;
+}
+
+.pos-loading {
+  width: 100%;
+  height: 50vh;
+
+  display: grid;
+  place-items: center;
+}
