@@ -19,7 +19,7 @@ const Note: React.FC<NoteProps> = ({ index, location, note }) => {
   const [editInput, setEditInput] = useState(note);
 
   const handleFinishEdit = () => {
-    editNote({ location: location, index: index, newNote: editInput });
+    editNote({ location, index, newNote: editInput });
     setEditing(false);
   };
 
@@ -34,8 +34,8 @@ const Note: React.FC<NoteProps> = ({ index, location, note }) => {
           className={`delete`}
           onClick={() => {
             deleteNote({
-              location: location,
-              index: index,
+              location,
+              index,
             });
           }}
         >
