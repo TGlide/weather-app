@@ -31,25 +31,33 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ error, userCity }) => {
   };
 
   if (error) {
-    return <div className={`pos-error`}>We couldn't get your location.</div>;
+    return (
+      <div className={`pos-error`} data-testid="error">
+        {error}
+      </div>
+    );
   }
 
   if (!userCity || !userCity.weather) {
-    return <div className={`pos-loading`}>Getting your location...</div>;
+    return (
+      <div className={`pos-loading`} data-testid="loading">
+        Getting your location...
+      </div>
+    );
   }
 
   return (
     <div className="current-weather">
       <div className="location">
         <MapPin />
-        <span>{userCity.location.name}</span>
+        <span data-testid="location-name">{userCity.location.name}</span>
       </div>
 
       <WeatherIcon
         iconCode={userCity.weather.current.icon}
         className={`weather-icon`}
       />
-      <span className="main-temp">
+      <span className="main-temp" data-testid="temp">
         {Math.round(userCity.weather.current.temp)}°
       </span>
 
