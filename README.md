@@ -26,6 +26,7 @@
   - [Installation](#installation)
 - [Usage](#usage)
   - [Run App](#run-app)
+- [Pictures](#pictures)
 
 <!-- ABOUT THE PROJECT -->
 
@@ -60,3 +61,11 @@ yarn
 ```sh
 yarn start
 ```
+
+## Pictures
+
+![image](https://user-images.githubusercontent.com/26071571/100480287-99b3e800-30cf-11eb-9519-5117e3222f6a.png)
+![image](https://user-images.githubusercontent.com/26071571/100480389-e26ba100-30cf-11eb-842b-b95c989165bb.png)
+![image](https://user-images.githubusercontent.com/26071571/100480456-147d0300-30d0-11eb-9a4e-6bebbde313b8.png)
+
+
