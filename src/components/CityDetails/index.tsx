@@ -1,7 +1,8 @@
 import { fromUnixTime, isToday } from "date-fns";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Daily, getWeather } from "../../api/getWeather";
 import { ReactComponent as X } from "../../assets/icons/x.svg";
+import { ReactComponent as Star } from "../../assets/icons/star.svg";
 import { Location } from "../../entities/Location";
 import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions, useStoreState } from "../../store";
@@ -23,6 +24,8 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
   const selectedCity = useStoreState((state) => state.selectedCity.data);
   const notes = useStoreState((state) => state.selectedNotes);
   const addNote = useStoreActions((actions) => actions.notes.add);
+  const favorites = useStoreState((state) => state.favorites.data);
+  const toggleFavorite = useStoreActions((actions) => actions.favorites.toggle);
 
   const handleClose = useCallback(() => {
     clearSelectedCity();
@@ -31,6 +34,12 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
   const { ref } = useComponentVisible(false, handleClose);
 
   const [noteInput, setNoteInput] = useState("");
+
+  const isFavorite = useMemo(() => {
+    if (!selectedCity.address) return false;
+    const key = Location.getKey(selectedCity.address);
+    return Object.keys(favorites).includes(key);
+  }, [favorites, selectedCity.address]);
 
   const renderDay = (day: Daily) => {
     if (isToday(fromUnixTime(day.dt))) return null;
@@ -57,7 +66,7 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
     if (!selectedCity.weather) fetchData();
   }, [selectedCity.address, selectedCity.weather, setSelectedWeather]);
 
-  if (!selectedCity.address) return null;
+  if (selectedCity.address === undefined) return null;
 
   return (
     <div className={`city-details`}>
@@ -68,8 +77,16 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
               {selectedCity.address.name}{" "}
               {Location.getKey(selectedCity.address)}
             </h1>
-
             <button
+              className={`star`}
+              onClick={() => {
+                if (selectedCity.address) toggleFavorite(selectedCity.address);
+              }}
+            >
+              <Star className={`${isFavorite && "filled"}`} />
+            </button>
+            <button
+              className={`close`}
               onClick={(e) => {
                 e.stopPropagation();
                 handleClose();

@@ -3,7 +3,7 @@ import { CityDatum, getCitiesByPopulation } from "../../api/getCities";
 import { Location } from "../../entities/Location";
 import { useStoreActions, useStoreState } from "../../store";
 import { sleep } from "../../utils/time";
-import CityCard from "./CityCard";
+import CityCard from "../CityCard";
 import "./styles.scss";
 
 interface CityListProps {}
@@ -44,8 +44,9 @@ const CityList: React.FC<CityListProps> = () => {
 
   return (
     <div className={`container city-list`}>
+      <h1>Largest Cities</h1>
       {largestCities.map((city) => {
-        return <CityCard city={city} key={city.name} />;
+        return <CityCard city={city} key={city.name} removeable={true} />;
       })}
     </div>
   );

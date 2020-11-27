@@ -25,7 +25,6 @@
 
       .header {
         display: flex;
-        justify-content: space-between;
         align-items: center;
 
         h1 {
@@ -39,7 +38,21 @@
           background: none;
           border: none;
           cursor: pointer;
+        }
 
+        button.star {
+          margin-left: auto;
+          svg {
+            color: $star-yellow;
+
+            &.filled {
+              fill: $star-yellow;
+            }
+          }
+        }
+
+        button.close {
+          margin-left: 1rem;
           svg {
             color: $ghost-white;
           }

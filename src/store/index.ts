@@ -6,6 +6,7 @@ import {
   persist,
 } from "easy-peasy";
 import { Location } from "../entities/Location";
+import { favoritesModel, FavoritesModel } from "./models/favorites";
 import { largestCitiesModel, LargestCitiesModel } from "./models/largestCities";
 import { locationModel, LocationModel } from "./models/location";
 import { NotesModel, notesModel } from "./models/notes";
@@ -17,6 +18,7 @@ interface StoreModel {
   selectedCity: SelectedCityModel;
   notes: NotesModel;
   selectedNotes: Computed<StoreModel, string[]>;
+  favorites: FavoritesModel;
 }
 
 export const store = createStore<StoreModel>({
@@ -30,6 +32,7 @@ export const store = createStore<StoreModel>({
     const key = Location.getKey(state.selectedCity.data.address);
     return state.notes.data[key];
   }),
+  favorites: persist(favoritesModel, { storage: "localStorage" }),
 });
 
 // store.persist.clear().then(() => {

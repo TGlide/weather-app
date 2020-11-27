@@ -1,4 +1,4 @@
-@import "../../../styles/variables.scss";
+@import "../../styles/variables.scss";
 
 .city-card {
   display: flex;
@@ -59,9 +59,26 @@
   }
 
   button {
-    margin-left: auto;
     background: none;
     border: none;
     cursor: pointer;
+  }
+
+  button.star {
+    margin-left: auto;
+    svg {
+      color: $star-yellow;
+
+      &.filled {
+        fill: $star-yellow;
+      }
+    }
+  }
+
+  button.close {
+    margin-left: 1rem;
+    svg {
+      color: $ghost-white;
+    }
   }
 }

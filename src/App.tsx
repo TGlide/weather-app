@@ -3,6 +3,7 @@ import "./App.scss";
 import CityDetails from "./components/CityDetails";
 import CityList from "./components/CityList";
 import CurrentWeather from "./components/CurrentWeather";
+import FavoritesList from "./components/FavoritesList";
 import Search from "./components/Search";
 import { usePosition } from "./hooks/usePosition";
 
@@ -13,7 +14,8 @@ function App() {
     <div className="App">
       <CurrentWeather coords={coords} error={posError} />
       <Search />
-      {/* <CityList /> */}
+      <FavoritesList />
+      <CityList />
 
       <CityDetails />
     </div>
