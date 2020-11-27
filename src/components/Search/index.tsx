@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { searchLocations } from "../../api/searchLocations";
 import { ReactComponent as SearchIcon } from "../../assets/icons/search.svg";
+import { City } from "../../entities/City";
 import { Location } from "../../entities/Location";
 import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions } from "../../store";
-import "./styles.scss";
 import "../../styles/layout.scss";
-import { City } from "../../entities/City";
+import "./styles.scss";
 
 interface SearchProps {}
 
