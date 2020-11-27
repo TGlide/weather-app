@@ -85,12 +85,13 @@ const CityDetails: React.FC<CityDetailsProps> = ({
       <div className="container">
         <div className="modal" ref={ref}>
           <div className="header">
-            <h1>{selectedCity.location.name}</h1>
+            <h1 data-testid="name">{selectedCity.location.name}</h1>
             <button
-              className={`star`}
+              className={`star ${isFavorite && "filled"}`}
               onClick={() => {
                 toggleFavorite(selectedCity);
               }}
+              data-testid="star"
             >
               <Star className={`${isFavorite && "filled"}`} />
             </button>
@@ -112,10 +113,10 @@ const CityDetails: React.FC<CityDetailsProps> = ({
                   className={`icon`}
                 />
                 <div className={`details`}>
-                  <div className="temperature">
+                  <div className="temperature" data-testid="temp">
                     {Math.round(selectedCity.weather.current.temp)}°
                   </div>
-                  <div className="feels">
+                  <div className="feels" data-testid="feels">
                     Feels like{" "}
                     {Math.round(selectedCity.weather.current.feels_like)}°
                   </div>
@@ -145,7 +146,7 @@ const CityDetails: React.FC<CityDetailsProps> = ({
             >
               Create note
             </button>
-            <div className="note-list">
+            <div className="note-list" data-testid="note-list">
               {notes?.map((note, idx) => {
                 if (!selectedCity.location) return null;
                 return (
