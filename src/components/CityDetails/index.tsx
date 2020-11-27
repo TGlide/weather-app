@@ -140,8 +140,10 @@ const CityDetails: React.FC<CityDetailsProps> = ({
             <button
               className={`create-note`}
               onClick={() => {
-                if (selectedCity.location)
+                if (selectedCity.location) {
                   addNote({ location: selectedCity.location, note: noteInput });
+                  setNoteInput("");
+                }
               }}
             >
               Create note
