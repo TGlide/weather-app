@@ -15,7 +15,7 @@ export class Location {
   }
 
   static fromLocationResponse(response: LocationResponse) {
-    return this.fromLocationResult(response.results?.[0]);
+    return Location.fromLocationResult(response.results?.[0]);
   }
 
   static fromLocationResult(result: Result) {
