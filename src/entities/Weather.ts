@@ -33,7 +33,7 @@ export class Weather {
 
     const dailyData: DailyData[] = [];
 
-    for (let day of response.daily) {
+    for (const day of response.daily) {
       const dailyIcon = day.weather[0].icon;
       const { dt, feels_like, temp } = day;
       dailyData.push({
