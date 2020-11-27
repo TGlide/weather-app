@@ -1,15 +1,19 @@
 import React from "react";
-import { useStoreState } from "../../store";
+import { City } from "../../entities/City";
 import CityCard from "../CityCard";
 import "./styles.scss";
 
-interface FavoritesListProps {}
+interface FavoritesListProps {
+  favorites: { [key: string]: City };
+}
 
-const FavoritesList: React.FC<FavoritesListProps> = () => {
-  const favorites = useStoreState((state) => state.favorites.data);
+const FavoritesList: React.FC<FavoritesListProps> = ({ favorites }) => {
   return (
     <div className="container favorites-list">
       <h1>Favorites</h1>
+      {Object.keys(favorites).length === 0 && (
+        <div className={`no-favorites`}>No favorites to show.</div>
+      )}
       {Object.entries(favorites).map(([key, city]) => (
         <CityCard city={city} key={key} />
       ))}

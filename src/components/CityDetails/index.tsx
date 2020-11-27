@@ -7,26 +7,31 @@ import { City } from "../../entities/City";
 import { Location } from "../../entities/Location";
 import { DailyData, Weather } from "../../entities/Weather";
 import useComponentVisible from "../../hooks/useComponentVisible";
-import { useStoreActions, useStoreState } from "../../store";
+import { useStoreActions } from "../../store";
 import "../../styles/layout.scss";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
 import Note from "./Note";
 import "./styles.scss";
 
-interface CityDetailsProps {}
+interface CityDetailsProps {
+  selectedCity?: City;
+  notes: string[];
+  favorites: { [key: string]: City };
+}
 
-const CityDetails: React.FC<CityDetailsProps> = () => {
+const CityDetails: React.FC<CityDetailsProps> = ({
+  selectedCity,
+  notes,
+  favorites,
+}) => {
   const clearSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.clear
   );
   const setSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.set
   );
-  const selectedCity = useStoreState((state) => state.selectedCity.data);
-  const notes = useStoreState((state) => state.selectedNotes);
   const addNote = useStoreActions((actions) => actions.notes.add);
-  const favorites = useStoreState((state) => state.favorites.data);
   const toggleFavorite = useStoreActions((actions) => actions.favorites.toggle);
 
   const handleClose = useCallback(() => {
@@ -80,10 +85,7 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
       <div className="container">
         <div className="modal" ref={ref}>
           <div className="header">
-            <h1>
-              {selectedCity.location.name}{" "}
-              {Location.getKey(selectedCity.location)}
-            </h1>
+            <h1>{selectedCity.location.name}</h1>
             <button
               className={`star`}
               onClick={() => {

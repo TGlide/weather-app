@@ -1,44 +1,22 @@
 import { fromUnixTime, isToday } from "date-fns";
-import React, { useEffect } from "react";
-import { getAddress } from "../../api/getAddress";
-import { getWeather } from "../../api/getWeather";
+import React from "react";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
 import { City } from "../../entities/City";
-import { Location } from "../../entities/Location";
-import { DailyData, Weather } from "../../entities/Weather";
+import { DailyData } from "../../entities/Weather";
 import { useStoreActions, useStoreState } from "../../store";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
 import "./styles.scss";
 
 interface CurrentWeatherProps {
-  coords?: Coordinates;
   error?: string;
+  userCity?: City;
 }
 
-const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
-  const userCity = useStoreState((state) => state.userCity.data);
-  const setCurrentLocation = useStoreActions((actions) => actions.userCity.set);
+const CurrentWeather: React.FC<CurrentWeatherProps> = ({ error, userCity }) => {
   const setSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.set
   );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!coords) return;
-      const weatherResp = await getWeather(coords);
-      const locationResponse = await getAddress(coords);
-
-      const weather = Weather.fromWeatherResponse(weatherResp.data);
-      const location = Location.fromLocationResponse(locationResponse.data);
-      const city = new City(location, weather);
-      setCurrentLocation(city);
-    };
-
-    if (coords) {
-      fetchData();
-    }
-  }, [coords, setCurrentLocation]);
 
   const renderDay = (date: DailyData) => {
     return (

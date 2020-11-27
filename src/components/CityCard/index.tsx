@@ -16,6 +16,7 @@ interface CityCardProps {
 
 const CityCard: React.FC<CityCardProps> = ({ city, removeable }) => {
   const [hidden, setHidden] = useState(false);
+
   const setSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.set
   );
