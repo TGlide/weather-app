@@ -10,6 +10,9 @@
     <a href="https://www.typescriptlang.org/">
       <img src="https://img.shields.io/badge/types-typescript-%23007ACC?style=for-the-badge&logo=typescript" alt="Built with Typescript">
     </a>
+    <a href="https://sass-lang.com/">
+      <img src="https://img.shields.io/badge/styling-sass-%23CC6699?style=for-the-badge&logo=sass" alt="Built with Sass">
+    </a>
   </p>
 </p>
 
