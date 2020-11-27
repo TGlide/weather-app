@@ -2,26 +2,27 @@ import { fromUnixTime, isToday } from "date-fns";
 import React, { useCallback, useEffect, useState } from "react";
 import { Daily, getWeather } from "../../api/getWeather";
 import { ReactComponent as X } from "../../assets/icons/x.svg";
+import { Location } from "../../entities/Location";
 import useComponentVisible from "../../hooks/useComponentVisible";
 import { useStoreActions, useStoreState } from "../../store";
 import "../../styles/layout.scss";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
+import Note from "./Note";
 import "./styles.scss";
 
 interface CityDetailsProps {}
 
 const CityDetails: React.FC<CityDetailsProps> = () => {
   const clearSelectedCity = useStoreActions(
-    (actions) => actions.clearSelectedCity
+    (actions) => actions.selectedCity.clear
   );
   const setSelectedWeather = useStoreActions(
-    (actions) => actions.setSelectedWeather
+    (actions) => actions.selectedCity.setWeather
   );
-  const selectedCity = useStoreState((state) => state.selectedCity);
+  const selectedCity = useStoreState((state) => state.selectedCity.data);
   const notes = useStoreState((state) => state.selectedNotes);
-  const addNote = useStoreActions((actions) => actions.addNote);
-  const deleteNote = useStoreActions((actions) => actions.deleteNote);
+  const addNote = useStoreActions((actions) => actions.notes.add);
 
   const handleClose = useCallback(() => {
     clearSelectedCity();
@@ -64,7 +65,8 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
         <div className="modal" ref={ref}>
           <div className="header">
             <h1>
-              {selectedCity.address.name} {selectedCity.address.getKey()}
+              {selectedCity.address.name}{" "}
+              {Location.getKey(selectedCity.address)}
             </h1>
 
             <button
@@ -118,22 +120,17 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
               Create note
             </button>
             <div className="note-list">
-              {notes?.map((note, idx) => (
-                <div key={idx}>
-                  <span>{note}</span>{" "}
-                  <button
-                    onClick={() => {
-                      if (selectedCity.address)
-                        deleteNote({
-                          location: selectedCity.address,
-                          index: idx,
-                        });
-                    }}
-                  >
-                    <X />
-                  </button>
-                </div>
-              ))}
+              {notes?.map((note, idx) => {
+                if (!selectedCity.address) return null;
+                return (
+                  <Note
+                    key={idx}
+                    index={idx}
+                    note={note}
+                    location={selectedCity.address}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

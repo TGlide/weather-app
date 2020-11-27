@@ -15,12 +15,18 @@ interface CurrentWeatherProps {
 }
 
 const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
-  const weatherData = useStoreState((state) => state.location.weather);
-  const setWeatherData = useStoreActions((actions) => actions.setWeather);
-  const addressData = useStoreState((state) => state.location.address);
-  const setAddressData = useStoreActions((actions) => actions.setAddress);
+  const weatherData = useStoreState((state) => state.location.data.weather);
+  const setWeatherData = useStoreActions(
+    (actions) => actions.location.setWeather
+  );
+  const addressData = useStoreState((state) => state.location.data.address);
+  const setAddressData = useStoreActions(
+    (actions) => actions.location.setAddress
+  );
 
-  const setSelectedCity = useStoreActions((actions) => actions.setSelectedCity);
+  const setSelectedCity = useStoreActions(
+    (actions) => actions.selectedCity.set
+  );
 
   useEffect(() => {
     const fetchData = async () => {

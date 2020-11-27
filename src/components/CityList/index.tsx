@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { CityDatum, getCitiesByPopulation } from "../../api/getCities";
 import { Location } from "../../entities/Location";
+import { useStoreActions, useStoreState } from "../../store";
 import { sleep } from "../../utils/time";
 import CityCard from "./CityCard";
 import "./styles.scss";
@@ -8,7 +9,10 @@ import "./styles.scss";
 interface CityListProps {}
 
 const CityList: React.FC<CityListProps> = () => {
-  const [largestCities, setLargestCities] = useState<Location[]>([]);
+  const largestCities = useStoreState((state) => state.largestCities.data);
+  const setLargestCities = useStoreActions(
+    (actions) => actions.largestCities.set
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +32,7 @@ const CityList: React.FC<CityListProps> = () => {
     };
 
     fetchData();
-  }, []);
+  }, [setLargestCities]);
 
   if (!largestCities.length) {
     return (

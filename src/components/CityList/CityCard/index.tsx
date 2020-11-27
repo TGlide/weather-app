@@ -16,10 +16,10 @@ const CityCard: React.FC<CityCardProps> = ({ city }) => {
   );
   const [hidden, setHidden] = useState(false);
   const setSelectedAddress = useStoreActions(
-    (actions) => actions.setSelectedAddress
+    (actions) => actions.selectedCity.setAddress
   );
   const setSelectedWeather = useStoreActions(
-    (actions) => actions.setSelectedWeather
+    (actions) => actions.selectedCity.setWeather
   );
 
   useEffect(() => {
