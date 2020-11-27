@@ -57,7 +57,6 @@ function App() {
       <Search />
       <FavoritesList favorites={favorites} />
       <CityList cities={largestCities} />
-
       <CityDetails
         selectedCity={selectedCity}
         favorites={favorites}

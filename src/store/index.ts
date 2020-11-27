@@ -22,7 +22,7 @@ interface StoreModel {
 }
 
 export const storeModel: StoreModel = {
-  userCity: persist(userCityModel),
+  userCity: persist(userCityModel, { storage: "localStorage" }),
   largestCities: persist(largestCitiesModel, { storage: "localStorage" }),
   selectedCity: selectedCityModel,
   notes: persist(notesModel, { storage: "localStorage" }),
