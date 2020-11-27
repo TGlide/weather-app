@@ -56,15 +56,19 @@ const CityCard: React.FC<CityCardProps> = ({ city, removeable }) => {
               iconCode={city.weather.current.icon}
               className={`icon`}
             />
-            <span className={`temperature`}>
+            <span className={`temperature`} data-testid="temp">
               {Math.round(city.weather.current.temp)}°
             </span>
           </>
         )}
       </div>
       <div className="city-info">
-        <span className={`city-name`}>{city.location.name}</span>
-        <span className={`country-name`}>{city.location.country}</span>
+        <span className={`city-name`} data-testid="city-name">
+          {city.location.name}
+        </span>
+        <span className={`country-name`} data-testid="country-name">
+          {city.location.country}
+        </span>
       </div>
       <button
         className={`star`}
@@ -82,6 +86,7 @@ const CityCard: React.FC<CityCardProps> = ({ city, removeable }) => {
             setHidden(true);
           }}
           className={`close`}
+          data-testid="close-btn"
         >
           <X />
         </button>

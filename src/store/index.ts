@@ -21,7 +21,7 @@ interface StoreModel {
   favorites: FavoritesModel;
 }
 
-export const store = createStore<StoreModel>({
+export const storeModel: StoreModel = {
   userCity: persist(userCityModel),
   largestCities: persist(largestCitiesModel, { storage: "localStorage" }),
   selectedCity: selectedCityModel,
@@ -33,7 +33,9 @@ export const store = createStore<StoreModel>({
     return state.notes.data[key];
   }),
   favorites: persist(favoritesModel, { storage: "localStorage" }),
-});
+};
+
+export const store = createStore<StoreModel>(storeModel);
 
 // store.persist.clear().then(() => {
 //   console.log("Persisted state has been removed");

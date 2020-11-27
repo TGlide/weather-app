@@ -3,7 +3,7 @@ import React from "react";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
 import { City } from "../../entities/City";
 import { DailyData } from "../../entities/Weather";
-import { useStoreActions, useStoreState } from "../../store";
+import { useStoreActions } from "../../store";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
 import "./styles.scss";
