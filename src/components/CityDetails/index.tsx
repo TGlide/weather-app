@@ -8,6 +8,7 @@ import { useStoreActions, useStoreState } from "../../store";
 import "../../styles/layout.scss";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
+import Note from "./Note";
 import "./styles.scss";
 
 interface CityDetailsProps {}
@@ -22,7 +23,6 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
   const selectedCity = useStoreState((state) => state.selectedCity.data);
   const notes = useStoreState((state) => state.selectedNotes);
   const addNote = useStoreActions((actions) => actions.notes.add);
-  const deleteNote = useStoreActions((actions) => actions.notes.delete);
 
   const handleClose = useCallback(() => {
     clearSelectedCity();
@@ -120,22 +120,17 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
               Create note
             </button>
             <div className="note-list">
-              {notes?.map((note, idx) => (
-                <div key={idx}>
-                  <span>{note}</span>{" "}
-                  <button
-                    onClick={() => {
-                      if (selectedCity.address)
-                        deleteNote({
-                          location: selectedCity.address,
-                          index: idx,
-                        });
-                    }}
-                  >
-                    <X />
-                  </button>
-                </div>
-              ))}
+              {notes?.map((note, idx) => {
+                if (!selectedCity.address) return null;
+                return (
+                  <Note
+                    key={idx}
+                    index={idx}
+                    note={note}
+                    location={selectedCity.address}
+                  />
+                );
+              })}
             </div>
           </div>
         </div>

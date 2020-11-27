@@ -5,6 +5,10 @@ export interface NotesModel {
   data: { [key: string]: string[] };
   add: Action<NotesModel, { location: Location; note: string }>;
   delete: Action<NotesModel, { location: Location; index: number }>;
+  edit: Action<
+    NotesModel,
+    { location: Location; index: number; newNote: string }
+  >;
 }
 
 export const notesModel: NotesModel = {
@@ -18,5 +22,10 @@ export const notesModel: NotesModel = {
     const key = Location.getKey(payload.location);
     if (!state.data[key]) return;
     state.data[key].splice(payload.index, 1);
+  }),
+  edit: action((state, payload) => {
+    const key = Location.getKey(payload.location);
+    if (!state.data[key]) return;
+    state.data[key][payload.index] = payload.newNote;
   }),
 };
