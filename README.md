@@ -28,6 +28,7 @@
   - [Installation](#installation)
 - [Usage](#usage)
   - [Run App](#run-app)
+  - [Preview](#preview)
 - [Pictures](#pictures)
 
 <!-- ABOUT THE PROJECT -->
@@ -79,6 +80,10 @@ yarn
 ```sh
 yarn start
 ```
+
+### Preview
+
+You can check out a live preview at: https://weather-app-dcs.vercel.app/
 
 ## Pictures
 
