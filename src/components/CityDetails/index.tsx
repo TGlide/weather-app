@@ -7,26 +7,31 @@ import { City } from "../../entities/City";
 import { Location } from "../../entities/Location";
 import { DailyData, Weather } from "../../entities/Weather";
 import useComponentVisible from "../../hooks/useComponentVisible";
-import { useStoreActions, useStoreState } from "../../store";
+import { useStoreActions } from "../../store";
 import "../../styles/layout.scss";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
 import Note from "./Note";
 import "./styles.scss";
 
-interface CityDetailsProps {}
+interface CityDetailsProps {
+  selectedCity?: City;
+  notes: string[];
+  favorites: { [key: string]: City };
+}
 
-const CityDetails: React.FC<CityDetailsProps> = () => {
+const CityDetails: React.FC<CityDetailsProps> = ({
+  selectedCity,
+  notes,
+  favorites,
+}) => {
   const clearSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.clear
   );
   const setSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.set
   );
-  const selectedCity = useStoreState((state) => state.selectedCity.data);
-  const notes = useStoreState((state) => state.selectedNotes);
   const addNote = useStoreActions((actions) => actions.notes.add);
-  const favorites = useStoreState((state) => state.favorites.data);
   const toggleFavorite = useStoreActions((actions) => actions.favorites.toggle);
 
   const handleClose = useCallback(() => {
@@ -80,15 +85,13 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
       <div className="container">
         <div className="modal" ref={ref}>
           <div className="header">
-            <h1>
-              {selectedCity.location.name}{" "}
-              {Location.getKey(selectedCity.location)}
-            </h1>
+            <h1 data-testid="name">{selectedCity.location.name}</h1>
             <button
-              className={`star`}
+              className={`star ${isFavorite && "filled"}`}
               onClick={() => {
                 toggleFavorite(selectedCity);
               }}
+              data-testid="star"
             >
               <Star className={`${isFavorite && "filled"}`} />
             </button>
@@ -110,10 +113,10 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
                   className={`icon`}
                 />
                 <div className={`details`}>
-                  <div className="temperature">
+                  <div className="temperature" data-testid="temp">
                     {Math.round(selectedCity.weather.current.temp)}°
                   </div>
-                  <div className="feels">
+                  <div className="feels" data-testid="feels">
                     Feels like{" "}
                     {Math.round(selectedCity.weather.current.feels_like)}°
                   </div>
@@ -143,7 +146,7 @@ const CityDetails: React.FC<CityDetailsProps> = () => {
             >
               Create note
             </button>
-            <div className="note-list">
+            <div className="note-list" data-testid="note-list">
               {notes?.map((note, idx) => {
                 if (!selectedCity.location) return null;
                 return (

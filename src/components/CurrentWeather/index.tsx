@@ -1,44 +1,22 @@
 import { fromUnixTime, isToday } from "date-fns";
-import React, { useEffect } from "react";
-import { getAddress } from "../../api/getAddress";
-import { getWeather } from "../../api/getWeather";
+import React from "react";
 import { ReactComponent as MapPin } from "../../assets/icons/map-pin.svg";
 import { City } from "../../entities/City";
-import { Location } from "../../entities/Location";
-import { DailyData, Weather } from "../../entities/Weather";
-import { useStoreActions, useStoreState } from "../../store";
+import { DailyData } from "../../entities/Weather";
+import { useStoreActions } from "../../store";
 import { formatDatetime } from "../../utils/date";
 import WeatherIcon from "../WeatherIcon";
 import "./styles.scss";
 
 interface CurrentWeatherProps {
-  coords?: Coordinates;
   error?: string;
+  userCity?: City;
 }
 
-const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
-  const userCity = useStoreState((state) => state.userCity.data);
-  const setCurrentLocation = useStoreActions((actions) => actions.userCity.set);
+const CurrentWeather: React.FC<CurrentWeatherProps> = ({ error, userCity }) => {
   const setSelectedCity = useStoreActions(
     (actions) => actions.selectedCity.set
   );
-
-  useEffect(() => {
-    const fetchData = async () => {
-      if (!coords) return;
-      const weatherResp = await getWeather(coords);
-      const locationResponse = await getAddress(coords);
-
-      const weather = Weather.fromWeatherResponse(weatherResp.data);
-      const location = Location.fromLocationResponse(locationResponse.data);
-      const city = new City(location, weather);
-      setCurrentLocation(city);
-    };
-
-    if (coords) {
-      fetchData();
-    }
-  }, [coords, setCurrentLocation]);
 
   const renderDay = (date: DailyData) => {
     return (
@@ -53,25 +31,33 @@ const CurrentWeather: React.FC<CurrentWeatherProps> = ({ coords, error }) => {
   };
 
   if (error) {
-    return <div className={`pos-error`}>We couldn't get your location.</div>;
+    return (
+      <div className={`pos-error`} data-testid="error">
+        {error}
+      </div>
+    );
   }
 
   if (!userCity || !userCity.weather) {
-    return <div className={`pos-loading`}>Getting your location...</div>;
+    return (
+      <div className={`pos-loading`} data-testid="loading">
+        Getting your location...
+      </div>
+    );
   }
 
   return (
     <div className="current-weather">
       <div className="location">
         <MapPin />
-        <span>{userCity.location.name}</span>
+        <span data-testid="location-name">{userCity.location.name}</span>
       </div>
 
       <WeatherIcon
         iconCode={userCity.weather.current.icon}
         className={`weather-icon`}
       />
-      <span className="main-temp">
+      <span className="main-temp" data-testid="temp">
         {Math.round(userCity.weather.current.temp)}°
       </span>
 

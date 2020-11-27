@@ -24,7 +24,7 @@ export class Location {
     let name = "";
     if (!(municipality || city)) name = result?.formatted || country;
     else name = `${municipality || city || state}, ${country}`;
-    name += result.components.state_code || "";
+
     return new Location(name, lng, lat, country, city || municipality);
   }
 

@@ -5,7 +5,7 @@ export const usePosition = () => {
   const [error, setError] = useState<string | undefined>(undefined);
 
   const onError = (error: PositionError) => {
-    setError(error.message);
+    setError("We couldn't get your location.");
   };
 
   useEffect(() => {
