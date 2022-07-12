@@ -83,7 +83,7 @@ yarn start
 
 ### Preview
 
-You can check out a live preview at: https://weather-app-dcs.vercel.app/
+You can check out a live preview at: https://tgl-weather-app.vercel.app/
 
 ## Pictures
 

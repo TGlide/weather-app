@@ -1,6 +1,6 @@
 {
-  "short_name": "DCS Weather",
-  "name": "DCS Weather",
+  "short_name": "Weather App",
+  "name": "Weather App",
   "icons": [
     {
       "src": "favicon.ico",
